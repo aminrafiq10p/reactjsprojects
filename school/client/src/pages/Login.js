@@ -5,21 +5,24 @@ import InputField from "../components/InputField";
 
 const Login = () => {
 
-    const state = useState({
-        fullname: "",
-        password: ""
+    const [enteredLogin, setLogin] = useState({
+        fullname: '',
+        password: ''
     });
+
+    const handleChange = (e) => {
+        setLogin({ ...enteredLogin, [e.target.name]: e.target.value });
+    }
 
     const submitForm = (e) => {
         e.preventDefault();
-        console.log(e.target.fullname.value)
-
+        setLogin({ fullname: '', password: '' });
     }
 
     return (
         <form onSubmit={submitForm}>
-            <InputField input={{ id: 'fullname', name: 'fullname', defaultValue: state.fullname }} />
-            <InputField input={{ id: 'password', name: 'password', defaultValue: state.password }} />
+            <InputField onChange={handleChange} input={{ id: 'fullname', name: 'fullname', value: enteredLogin.fullname }} />
+            <InputField onChange={handleChange} input={{ id: 'password', name: 'password', value: enteredLogin.password }} />
             <input type="submit" />
             <Link to='/register'>Register</Link>
             <Link to='/forgotpassword'>Forgot Password</Link>

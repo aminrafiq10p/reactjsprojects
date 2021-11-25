@@ -1,7 +1,7 @@
 const InputField = (props) => {
 
     return (
-        <input {...props.input} />
+        <input onChange={props.onChange} {...props.input} />
     );
 }
 
