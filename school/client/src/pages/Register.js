@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import validator from 'validator';
 
 import InputField from "../components/InputField";
 
@@ -11,9 +12,9 @@ const Register = () => {
     repassword: "",
   });
 
-  const [errorState, setLoginErrors] = useState({
-    fullnameError: "Please enter fullname",
-    emailError: "Please enter email",
+  const [errorState, setRegisterErrors] = useState({
+    fullnameError: "",
+    emailError: "",
     passwordError: "",
     repasswordError: "",
   });
@@ -24,21 +25,56 @@ const Register = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    const fullname = enteredRegister.fullname;
-    const email = enteredRegister.email;
+    const fullname = enteredRegister.fullname.trim();
+    const email = enteredRegister.email.trim();
     const password = enteredRegister.password;
     const repassword = enteredRegister.repassword;
 
-    if (
-      fullname !== "" &&
-      email !== "" &&
-      password !== "" &&
-      repassword !== ""
-    ) {
-      console.log("form posted");
-      setRegister({ fullname: "", email: "", password: "", repassword: "" });
+    if (fullname === "") {
+      errorState.fullnameError = "Please enter fullname";
     } else {
+      errorState.fullnameError = "";
     }
+
+    if (email === "") {
+      errorState.emailError = "Please enter email";
+    } else {
+      if (!validator.isEmail(email)) {
+        errorState.emailError = "Incorrect email";
+      } else {
+        errorState.emailError = "";
+      }
+    }
+
+    if (password === "") {
+      errorState.passwordError = "Please enter password";
+    } else {
+      errorState.passwordError = "";
+    }
+
+    if (repassword === "") {
+      errorState.repasswordError = "Please enter password again";
+    } else {
+      if (repassword !== password) {
+        errorState.repasswordError = "Passwords do not match";
+      } else {
+        errorState.repasswordError = "";
+      }
+    }
+    setRegisterErrors({ ...errorState });
+
+    if (errorState.fullnameError === "" && errorState.emailError === "" && errorState.passwordError === "" && errorState.repasswordError === "") {
+      console.log('form posted');
+      setRegister({ fullname: "", email: "", password: "", repassword: "" });
+    }
+    /*
+ 
+    if ( ) {
+      console.log('form posted');
+      setRegister({ fullname: "", email: "", password: "", repassword: "" });
+      setRegisterErrors({ fullnameError: "", emailError: "", passwordError: "", repasswordError: "" })
+    }
+    */
   };
 
   return (
@@ -52,7 +88,7 @@ const Register = () => {
           </div>
           <div className="card-body">
             <p className="login-box-msg">Register a new membership</p>
-            <form onSubmit={submitForm} autoComplete="off">
+            <form onSubmit={submitForm} autoComplete="off" noValidate>
               <div className="formInputBlock">
                 <div className="input-group">
                   <InputField
@@ -61,7 +97,7 @@ const Register = () => {
                       type: "text",
                       id: "fullname",
                       name: "fullname",
-                      defaultValue: enteredRegister.fullname,
+                      value: enteredRegister.fullname,
                       className: "form-control",
                       placeholder: "Full name",
                     }}
@@ -93,7 +129,7 @@ const Register = () => {
                       type: "email",
                       id: "email",
                       name: "email",
-                      defaultValue: enteredRegister.email,
+                      value: enteredRegister.email,
                       className: "form-control",
                       placeholder: "Email",
                     }}
@@ -125,7 +161,7 @@ const Register = () => {
                       type: "password",
                       id: "password",
                       name: "password",
-                      defaultValue: enteredRegister.password,
+                      value: enteredRegister.password,
                       className: "form-control",
                       placeholder: "Password",
                     }}
@@ -136,26 +172,51 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
+                {errorState.passwordError && (
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: "red",
+                      paddingLeft: "4px",
+                    }}
+                  >
+                    {errorState.passwordError}
+                  </div>
+                )}
               </div>
 
-              <div className="input-group mb-3">
-                <InputField
-                  onChange={handleChange}
-                  input={{
-                    type: "password",
-                    id: "repassword",
-                    name: "repassword",
-                    defaultValue: enteredRegister.repassword,
-                    className: "form-control",
-                    placeholder: "Retype Password",
-                  }}
-                />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-lock"></span>
+              <div className="formInputBlock">
+                <div className="input-group">
+                  <InputField
+                    onChange={handleChange}
+                    input={{
+                      type: "password",
+                      id: "repassword",
+                      name: "repassword",
+                      value: enteredRegister.repassword,
+                      className: "form-control",
+                      placeholder: "Retype Password",
+                    }}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-lock"></span>
+                    </div>
                   </div>
                 </div>
+                {errorState.repasswordError && (
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: "red",
+                      paddingLeft: "4px",
+                    }}
+                  >
+                    {errorState.repasswordError}
+                  </div>
+                )}
               </div>
+
               <div className="row">
                 <button type="submit" className="btn btn-primary btn-block">
                   Register
