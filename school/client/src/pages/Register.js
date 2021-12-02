@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import validator from 'validator';
+import axios from 'axios';
 
 import InputField from "../components/InputField";
 
@@ -23,7 +24,7 @@ const Register = () => {
     setRegister({ ...enteredRegister, [e.target.name]: e.target.value });
   };
 
-  const submitForm = (e) => {
+  async function submitForm(e) {
     e.preventDefault();
     const fullname = enteredRegister.fullname.trim();
     const email = enteredRegister.email.trim();
@@ -64,8 +65,19 @@ const Register = () => {
     setRegisterErrors({ ...errorState });
 
     if (errorState.fullnameError === "" && errorState.emailError === "" && errorState.passwordError === "" && errorState.repasswordError === "") {
-      console.log('form posted');
-      setRegister({ fullname: "", email: "", password: "", repassword: "" });
+
+      try {
+        const { data } = await axios.post('http://localhost:4000/register', { fullname: fullname, email: email }, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        console.log('form posted');
+        console.log(data);
+      } catch (error) {
+        console.error('There was an error!', error);
+      }
+      //setRegister({ fullname: "", email: "", password: "", repassword: "" });
     }
     /*
  
@@ -75,7 +87,7 @@ const Register = () => {
       setRegisterErrors({ fullnameError: "", emailError: "", passwordError: "", repasswordError: "" })
     }
     */
-  };
+  }
 
   return (
     <div className="hold-transition register-page">
