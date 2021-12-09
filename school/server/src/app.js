@@ -2,7 +2,9 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 
-const port = 4000;
+const sequelize = require("./utils/database");
+
+const PORT = process.env.PORT || 4000;
 
 const authRoutes = require("./routes/auth");
 
@@ -14,4 +16,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(authRoutes);
 
-app.listen(port);
+sequelize.sync().then(() => {
+    app.listen(PORT, () => {
+        console.log(`listening on: http://localhost:${PORT}`);
+    });
+});
