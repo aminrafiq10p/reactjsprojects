@@ -99,7 +99,7 @@ const Register = () => {
             </h1>
           </div>
           <div className="card-body">
-            <p className="login-box-msg">Register a new membership</p>
+            <p className="login-box-msg">Register your account</p>
             <form onSubmit={submitForm} autoComplete="off" noValidate>
               <div className="formInputBlock">
                 <div className="input-group">

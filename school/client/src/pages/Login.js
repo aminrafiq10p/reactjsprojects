@@ -28,6 +28,7 @@ const Login = () => {
             </h1>
           </div>
           <div className="card-body">
+            <p className="login-box-msg">Login into your account</p>
             <form onSubmit={submitForm}>
               <div className="input-group mb-3">
                 <InputField
