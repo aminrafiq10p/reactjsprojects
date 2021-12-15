@@ -66,10 +66,16 @@ const Register = () => {
 
     if (errorState.fullnameError === "" && errorState.emailError === "" && errorState.passwordError === "" && errorState.repasswordError === "") {
 
+      var formData = {
+        fullname: fullname,
+        email: email,
+        password: password,
+      }
+
       try {
-        const { data } = await axios.post('http://localhost:4000/register', { fullname: fullname, email: email }, {
+        const { data } = await axios.post('http://localhost:4000/register', { formData }, {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
           }
         });
         console.log('form posted');
@@ -80,7 +86,7 @@ const Register = () => {
       //setRegister({ fullname: "", email: "", password: "", repassword: "" });
     }
     /*
- 
+   
     if ( ) {
       console.log('form posted');
       setRegister({ fullname: "", email: "", password: "", repassword: "" });

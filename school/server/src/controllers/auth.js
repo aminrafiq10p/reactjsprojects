@@ -32,7 +32,8 @@ async function postRegister(req, res, next) {
     res.send(userMessage);
     */
     res.status(201).json({
-        message: 'Register route working'
+        message: 'Register route seems to working',
+        userData: req.body
     });
 }
 
